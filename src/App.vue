@@ -338,6 +338,7 @@ export default {
 		}
 
 		register(await connect())
+		emit('talk:audioEncoder:ready')
 	},
 
 	methods: {

@@ -63,6 +63,7 @@ import talkHashCheck from './mixins/talkHashCheck'
 import '@nextcloud/dialogs/styles/toast.scss'
 import { register } from 'extendable-media-recorder'
 import { connect } from 'extendable-media-recorder-wav-encoder'
+import { emit } from '@nextcloud/event-bus'
 
 export default {
 
@@ -136,6 +137,7 @@ export default {
 	async mounted() {
 		// Initialise audiorecorder encoder
 		await register(await connect())
+		emit('talk:audioEncoder:ready')
 	},
 
 	methods: {

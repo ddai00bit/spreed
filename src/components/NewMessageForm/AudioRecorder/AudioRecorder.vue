@@ -28,6 +28,7 @@
 				content: startRecordingTooltip,
 				delay: tooltipDelay,
 			}"
+			:disabled="!encoderReady"
 			class="audio-recorder__trigger nc-button nc-button__main"
 			@click="start">
 			<Microphone
@@ -79,6 +80,7 @@ import Tooltip from '@nextcloud/vue/dist/Directives/Tooltip'
 import { mediaDevicesManager } from '../../../utils/webrtc/index'
 import { showError } from '@nextcloud/dialogs'
 import { MediaRecorder } from 'extendable-media-recorder'
+import { subscribe, unsubscribe } from '@nextcloud/event-bus'
 
 export default {
 	name: 'AudioRecorder',
@@ -95,6 +97,8 @@ export default {
 
 	data() {
 		return {
+			// Wav audio encoder is ready
+			encoderReady: false,
 			// The audio stream object
 			audioStream: null,
 			// The media recorder which generate the recorded chunks
@@ -155,8 +159,13 @@ export default {
 		},
 	},
 
+	mounted() {
+		subscribe('talk:audioEncoder:ready', this.handleAudioEncoderReady)
+	},
+
 	beforeDestroy() {
 		this.killStreams()
+		unsubscribe('talk:audioEncoder:ready', this.handleAudioEncoderReady)
 	},
 
 	methods: {
@@ -295,6 +304,13 @@ export default {
 		 */
 		killStreams() {
 			this.audioStream?.getTracks().forEach(track => track.stop())
+		},
+
+		/**
+		 * Enables the recording button once the wav encoder is initialized
+		 */
+		handleAudioEncoderReady() {
+			this.encoderReady = true
 		},
 	},
 

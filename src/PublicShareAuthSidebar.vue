@@ -49,6 +49,7 @@ import sessionIssueHandler from './mixins/sessionIssueHandler'
 import talkHashCheck from './mixins/talkHashCheck'
 import { register } from 'extendable-media-recorder'
 import { connect } from 'extendable-media-recorder-wav-encoder'
+import { emit } from '@nextcloud/event-bus'
 
 export default {
 
@@ -102,6 +103,7 @@ export default {
 	async mounted() {
 		// Initialise audiorecorder encoder
 		register(await connect())
+		emit('talk:audioEncoder:ready')
 	},
 
 	beforeMount() {
