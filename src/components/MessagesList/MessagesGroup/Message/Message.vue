@@ -198,19 +198,13 @@ the main body of the message as well as a quote.
 				<span>{{ t('spreed', 'Unread messages') }}</span>
 			</div>
 		</div>
-
-		<Modal
+		<RoomSelector
 			v-if="modal"
 			container="#content-vue"
-			@close="modal=false">
-			<div>
-				<RoomSelector
-					:show-postable-only="true"
-					:dialog-title="setDialogTitle"
-					@select="setSelectedRoom"
-					@close="modal=false" />
-			</div>
-		</Modal>
+			:show-postable-only="true"
+			:dialog-title="setDialogTitle"
+			@select="setSelectedRoom"
+			@close="modal=false" />
 	</li>
 </template>
 
@@ -247,7 +241,6 @@ import {
 import { generateUrl } from '@nextcloud/router'
 import Location from './MessagePart/Location'
 import Contact from './MessagePart/Contact.vue'
-import Modal from '@nextcloud/vue/dist/Components/Modal'
 import RoomSelector from '../../../../views/RoomSelector.vue'
 
 export default {
@@ -270,7 +263,6 @@ export default {
 		Reload,
 		Share,
 		ActionSeparator,
-		Modal,
 		RoomSelector,
 	},
 
